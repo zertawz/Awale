@@ -1,0 +1,7 @@
+<<<<<<< HEAD
+__pycache__/*
+*.pyc
+=======
+projet/__pycache__/*
+*.pyc
+>>>>>>> main
