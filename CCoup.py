@@ -44,6 +44,9 @@ class Ccoup:
     def caseadv(self):
         #creer un objet de la classe Cjouable
         jouable1=Cjouable(self.__player,self.__liste)
+        
+        #print(self.deplacement()[1])
+        
         if self.deplacement()[1] in jouable1.adversaire():
             return True
         else:
@@ -83,19 +86,26 @@ class Ccoup:
     
     #gere la récuperation des graines et meca et compte combien on été récupérées
     def recuperation(self):
+        #print("On m'appelle pour que je mange")
         #creer un objet de la classe Cjouable
         jouable3=Cjouable(self.__player,self.__liste)
         if self.Comfam()==True:
+            print("Non, si on prend c'est la famine") 
             return self.__liste,self.__score1,self.__score2
         else:
             i=self.__choix-1
             while self.mangeable()==True and i >= jouable3.borninf():
+                print("Miam")
+                #Cas du joueur1
                 if self.__player==1:
                     self.__score1+=self.__liste[i]
                     self.__liste[i]=0
+                    i-=1
+                #Cas du joueur2
                 elif self.__player==2:
                     self.__score2+=self.__liste[i]
                     self.__liste[i]=0
+                    i-=1
             return self.__liste,self.__score1,self.__score2
                 
                 

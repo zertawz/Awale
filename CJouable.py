@@ -36,7 +36,6 @@ class Cjouable:
         
     #Permet de donner l'indice de la borne supérieure de l'adversaire (dephasage compense)
     def bornsup(self):
-        print(self.__player)
         if self.__player==1:
             return 11
         if self.__player==2:

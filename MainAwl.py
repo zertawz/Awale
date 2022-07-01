@@ -25,8 +25,8 @@ score2=0
 #initialise le premier tour
 player=1
 init=Cplateau(liste,score1,score2)
-print(init.affichagep())
-print(init.affichages())
+init.affichagep()
+init.affichages()
 
 #correspond à la Condition de sortie du jeu
 while score1<25 and score2<25:
@@ -45,7 +45,9 @@ while score1<25 and score2<25:
             
         #Creation d'un objet pour jouer le tour
         coup=Ccoup(choix,player,liste,score1,score2)
-          
+        """	
+        le problème réside dans un mauvais appel
+        """  
         coup.deplacement()[0]
         liste=coup.recuperation()[0]
         score1=coup.recuperation()[1]
@@ -54,9 +56,8 @@ while score1<25 and score2<25:
         
         #Activation des classes pour l'affichage
         aff=Cplateau(liste,score1,score2)
-        
-        print(aff.affichagep())
-        print(aff.affichages())
+        aff.affichagep()
+        aff.affichages()
         
 #Conditions de fin de partie
 print("_______Fin de partie_______")
