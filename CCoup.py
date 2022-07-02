@@ -8,12 +8,13 @@ Ce programme est une classe qui gère les coups jouées et les scores
 """
 from CJouable import Cjouable
 class Ccoup:
-    def __init__(self,choix,player,liste,score1=0,score2=0):
+    def __init__(self,choix,player,liste,score1,score2,arrive=-1):
         self.__choix=choix
         self.__liste=liste
         self.__player=player
         self.__score1=score1
         self.__score2=score2
+        self.__arrive=arrive
         
     #Definit le nombre de tours que va faire le choix
     def nbtc(self):
@@ -30,25 +31,25 @@ class Ccoup:
 
     #permet de gérer le déplacement des graines en fonction du coup et de stocker le dernier indice
     def deplacement(self):
-        choix1=self.__choix-1
+        self.__arrive=self.__choix-1
         #rajoute des graine dans le cas ou il y a un tour complet
-        self.__liste[choix1] = self.__liste[choix1]+self.nbtc()
-        for i in range(1,self.__liste[choix1]+1):
-            choix1=(choix1+1)%12
-            self.__liste[choix1]+=1
+        self.__liste[self.__arrive] = self.__liste[self.__arrive]+self.nbtc()
+        for i in range(1,self.__liste[self.__arrive]+1):
+            self.__arrive=(self.__arrive+1)%12
+            self.__liste[self.__arrive]+=1
         self.__liste[self.__choix-1]=0
-        #choix1 correspond à l'indice de la dernière case semée (comptage joueur)
-        return self.__liste,choix1+1
+	self.__arrive+=1
     
     #defini si la dernière case est semée chez l'adversaire
     def caseadv(self):
         #creer un objet de la classe Cjouable
         jouable1=Cjouable(self.__player,self.__liste)
-
-        print(self.deplacement()[1], jouable1.adversaire())
-        if self.deplacement()[1] in jouable1.adversaire():
+        print(self.__arrive)
+        if self.__arrive in jouable1.adversaire():
+            print("t'es chez l'adversaire")
             return True
         else:
+            print("t'es chez toi")
             return False
     
     #defini si une case est mangeable après la distribution
@@ -87,9 +88,6 @@ class Ccoup:
     def recuperation(self):
         #creer un objet de la classe Cjouable
         jouable3=Cjouable(self.__player,self.__liste)
-        """
-        Portion non fonctionelle le Comfam ne fonctionne pas
-	"""
         if self.Comfam()==True:
             print("Non, si on prend c'est la famine") 
             return self.__liste,self.__score1,self.__score2

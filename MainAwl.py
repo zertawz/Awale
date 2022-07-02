@@ -17,7 +17,8 @@ from CCoup import Ccoup
 #historique=[]
 
 #Definit la liste de départ
-liste = [4,4,4,4,4,4,1,2,0,0,0,0]
+liste = [4,4,4,1,4,4,4,4,4,4,4,4]
+#liste = [4,4,4,4,4,4,1,2,0,0,0,0]
 #definit les scores de depart
 score1=0
 score2=0
@@ -45,14 +46,12 @@ while score1<25 and score2<25:
             
         #Creation d'un objet pour jouer le tour
         coup=Ccoup(choix,player,liste,score1,score2)
-        """	
-        le problème réside dans un mauvais appel
-        """  
-        coup.deplacement()[0]
-        liste=coup.recuperation()[0]
-        score1=coup.recuperation()[1]
-        score2=coup.recuperation()[2]
-	
+        
+        #appel de la méthode déplacement pour mettre à jour la liste
+        coup.deplacement()
+        #appels pour mettre à jour les scores et le plateau
+        liste,score1,score2=coup.recuperation()
+
         #Activation des classes pour l'affichage
         aff=Cplateau(liste,score1,score2)
         aff.affichagep()
