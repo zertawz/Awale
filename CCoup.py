@@ -38,28 +38,29 @@ class Ccoup:
             self.__arrive=(self.__arrive+1)%12
             self.__liste[self.__arrive]+=1
         self.__liste[self.__choix-1]=0
-	self.__arrive+=1
+        self.__arrive+=1
     
-    #defini si la dernière case est semée chez l'adversaire
+    #defini si la dernière case est semée est chez l'adversaire
     def caseadv(self):
         #creer un objet de la classe Cjouable
         jouable1=Cjouable(self.__player,self.__liste)
         print(self.__arrive)
         if self.__arrive in jouable1.adversaire():
-            print("t'es chez l'adversaire")
             return True
         else:
-            print("t'es chez toi")
             return False
     
     #defini si une case est mangeable après la distribution
     def mangeable(self):
         if self.caseadv()==False:
+            print("tu ne peux pas manger mec t'es chez toi")
             return False
         else:
-            if self.__liste[self.__choix-1]==3 or self.__liste[self.__choix-1]==4:
+            if self.__liste[self.__arrive-1]==2 or self.__liste[self.__arrive-1]==3:
+                print("Je sais pas si ya famine mais c'est mangeable")
                 return True
             else:
+                print("t'es bien chez l'adversaire mais tu ne peux pas manger c'est trop gros")
                 return False
         
     #Vérifie que le coup ne provoque pas la famine si il y a famine on active une variable
