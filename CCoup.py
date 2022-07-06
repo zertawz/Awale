@@ -8,12 +8,13 @@ Ce programme est une classe qui gère les coups jouées et les scores
 """
 from CJouable import Cjouable
 class Ccoup:
-    def __init__(self,choix,player,liste,score1,score2,arrive=-1):
+    def __init__(self,choix,player,liste,score1,score2,tour,arrive=-1):
         self.__choix=choix
         self.__liste=liste
         self.__player=player
         self.__score1=score1
         self.__score2=score2
+        self.__tour=tour
         self.__arrive=arrive
         
     #Definit le nombre de tours que va faire le choix
@@ -38,13 +39,14 @@ class Ccoup:
             self.__arrive=(self.__arrive+1)%12
             self.__liste[self.__arrive]+=1
         self.__liste[self.__choix-1]=0
-        #Permet de regler le déphasage des indices
+        #Permet de regler le déphasage des indices (on joue entre 1 et 12)
         self.__arrive+=1
+        #Mise à jour de l'attribut liste pour l'attribut tour
+        self.__tour.liste=self.__liste
     
     #defini si une case est mangeable après la distribution
     def mangeable(self,trou):
-        jouable1=Cjouable(self.__player,self.__liste)
-        if trou not in jouable1.adversaire():
+        if trou not in self.__tour.adversaire():
             return False
         else:
             if self.__liste[trou-1]==2 or self.__liste[trou-1]==3:
@@ -52,44 +54,51 @@ class Ccoup:
             else:
                 return False
         
-    #Vérifie que le coup ne provoque pas la famine si il y a famine on active une variable
-    """
-    Fonction complètement à refaire.
-    """
+    #Vérifie que le coup ne provoque pas la famine si il y a famine on renvoit True
     def Comfam(self):
-        #creer un objet de la classe Cjouable
-        jouable2=Cjouable(self.__player,self.__liste)
-
-        if self.__arrive-1 != jouable2.bornsup():
-            #print("t'es pas arrivé sur la borne sup de l'adversaire",jouable2.bornsup())
-            for i in range((self.__arrive-1)+1,jouable2.bornsup()+1):
+        if not self.mangeable(self.__arrive):
+            return False
+        #Cas ou on ne tombe pas sur la bornesup de l'adversaire
+        elif self.__arrive-1 != self.__tour.bornsup():
+            #Est ce qu'il y a des trou non vide au dessus de l'indice d'arrivé
+            for i in range((self.__arrive-1)+1,self.__tour.bornsup()+1):
                 if self.__liste[i]!=0:
-                    #print("Une des cases plus haute que l'endroit que t'as touché n'est pas nulle il n'y aura jamais de famine")
+                    #si il y en a un il n'y aura jamais de famine
                     return False
-                else:
-                    for i in range((self.__choix-1),jouable2.borninf()-1,-1):
-                        if self.mangeable(i)==False:
-                            return False
-                        else:
-                            return True
+            """
+            toutes les cases au dessus sont vide teston la mangeabilité des trou inf
+            Cette boucle for est difficile à comprendre à cause des indices
+            -Pas besoin de tester l'indice de l'endroit ou on tombe cf:premier if
+            -la fonction borninf retourne l'indice en comptage python
+	    ce qui compense le -1 à mettre pour vérifier le trou avec l'indice
+	    le plus bas
+            """
+            for i in range((self.__arrive-1),self.__tour.borninf(),-1):
+                if self.mangeable(i)==False:
+                    #Si un des trou inf n'est pas mangeable pas de famine
+                    return False
+            #Tout est mangeable attention famine!
+            return True
+        """
+        Cas ou on tombe sur la bornesup de l'adversaire:
+	On doit tester si toutes les cases de l'adversaire sont mangeable
+	de la borne maximale à la borne minimale
+        """
         else:
-            #print("t'es arrivé sur la borne sup de l'adversaire!",jouable2.bornsup())
-            for i in range((self.__choix-1),jouable2.borninf()-1,-1):
-                        if self.mangeable(i)==False:
-                            return False
-                        else:
-                            return True     
+            for i in range(self.__arrive, self.__tour.borninf(),-1):
+                if self.mangeable(i)==False:
+                    return False
+            #tout est mangeable: de bornesup à borneinf
+            return True     
     
     #gere la récuperation des graines et meca et compte combien on été récupérées
     def recuperation(self):
-        #creer un objet de la classe Cjouable
-        jouable3=Cjouable(self.__player,self.__liste)
         if self.Comfam()==True:
             return self.__liste,self.__score1,self.__score2
         else:
             i=self.__choix-1
             #print("Miam", self.mangeable(), jouable3.borninf())
-            while self.mangeable(self.__arrive)==True and i >= jouable3.borninf():
+            while self.mangeable(self.__arrive)==True and i >= self.__tour.borninf():
                 #Cas du joueur1
                 if self.__player==1:
                     self.__score1+=self.__liste[i]
@@ -101,7 +110,3 @@ class Ccoup:
                     self.__liste[i]=0
                     i-=1
             return self.__liste,self.__score1,self.__score2
-                
-                
-        
-

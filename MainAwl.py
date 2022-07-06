@@ -17,8 +17,8 @@ from CCoup import Ccoup
 #historique=[]
 
 #Definit la liste de départ
-liste = [4,4,4,4,4,4,4,4,4,4,4,4]
-#liste = [4,4,4,4,4,4,1,2,0,0,0,0]
+#liste = [4,4,4,4,4,4,4,4,4,4,4,4]
+liste = [4,4,4,4,4,4,1,2,0,0,1,0]
 #definit les scores de depart
 score1=0
 score2=0
@@ -43,9 +43,13 @@ while score1<25 and score2<25:
         choix=-1
         while choix not in tour.joueur() and choix not in tour.casjfam():
             choix=int(input("Choix du joueur"+str(player)+ "\n"))
-            
+        """
+	Creation d'un objet de la classe coup pour jouer le tour
+	On envoit en attribut l'objet tour qui peut être modifié car
+	la saisie protégé à déjà été réalisée
+        """
         #Creation d'un objet pour jouer le tour
-        coup=Ccoup(choix,player,liste,score1,score2)
+        coup=Ccoup(choix,player,liste,score1,score2,tour)
         
         #appel de la méthode déplacement pour mettre à jour la liste
         coup.deplacement()
