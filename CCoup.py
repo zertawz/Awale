@@ -66,12 +66,11 @@ class Ccoup:
                     #si il y en a un il n'y aura jamais de famine
                     return False
             """
-            toutes les cases au dessus sont vide teston la mangeabilité des trou inf
-            Cette boucle for est difficile à comprendre à cause des indices
-            -Pas besoin de tester l'indice de l'endroit ou on tombe cf:premier if
+            Toutes les cases au dessus sont vides. Testons la mangeabilité des trous inf
+            -Pas besoin de tester l'indice de l'endroit où on tombe cf:premier if
             -la fonction borninf retourne l'indice en comptage python
-	    ce qui compense le -1 à mettre pour vérifier le trou avec l'indice
-	    le plus bas
+            ce qui compense le -1 à mettre pour vérifier le trou avec l'indice
+            le plus bas.
             """
             for i in range((self.__arrive-1),self.__tour.borninf(),-1):
                 if self.mangeable(i)==False:
@@ -79,34 +78,34 @@ class Ccoup:
                     return False
             #Tout est mangeable attention famine!
             return True
-        """
-        Cas ou on tombe sur la bornesup de l'adversaire:
-	On doit tester si toutes les cases de l'adversaire sont mangeable
-	de la borne maximale à la borne minimale
-        """
         else:
+            """
+            Cas où on tombe sur la bornesup de l'adversaire:
+            On doit tester si toutes les cases de l'adversaire sont mangeables.
+            De la borne maximale à la borne minimale.
+            """
             for i in range(self.__arrive, self.__tour.borninf(),-1):
                 if self.mangeable(i)==False:
                     return False
             #tout est mangeable: de bornesup à borneinf
-            return True     
-    
+            return True
+
     #gere la récuperation des graines et meca et compte combien on été récupérées
     def recuperation(self):
         if self.Comfam()==True:
             return self.__liste,self.__score1,self.__score2
         else:
-            i=self.__choix-1
-            #print("Miam", self.mangeable(), jouable3.borninf())
-            while self.mangeable(self.__arrive)==True and i >= self.__tour.borninf():
+            i=self.__arrive
+            #tant que les cases suivantes sont mangeables on continue
+            while self.mangeable(self.__arrive)==True and i>self.__tour.borninf():
                 #Cas du joueur1
                 if self.__player==1:
-                    self.__score1+=self.__liste[i]
-                    self.__liste[i]=0
+                    self.__score1+=self.__liste[i-1]
+                    self.__liste[i-1]=0
                     i-=1
                 #Cas du joueur2
                 elif self.__player==2:
-                    self.__score2+=self.__liste[i]
-                    self.__liste[i]=0
+                    self.__score2+=self.__liste[i-1]
+                    self.__liste[i-1]=0
                     i-=1
             return self.__liste,self.__score1,self.__score2
