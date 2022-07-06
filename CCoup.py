@@ -38,49 +38,44 @@ class Ccoup:
             self.__arrive=(self.__arrive+1)%12
             self.__liste[self.__arrive]+=1
         self.__liste[self.__choix-1]=0
+        #Permet de regler le déphasage des indices
         self.__arrive+=1
     
-    #defini si la dernière case est semée est chez l'adversaire
-    def caseadv(self):
-        #creer un objet de la classe Cjouable
-        jouable1=Cjouable(self.__player,self.__liste)
-        print(self.__arrive)
-        if self.__arrive in jouable1.adversaire():
-            return True
-        else:
-            return False
-    
     #defini si une case est mangeable après la distribution
-    def mangeable(self):
-        if self.caseadv()==False:
-            print("tu ne peux pas manger mec t'es chez toi")
+    def mangeable(self,trou):
+        jouable1=Cjouable(self.__player,self.__liste)
+        if trou not in jouable1.adversaire():
             return False
         else:
-            if self.__liste[self.__arrive-1]==2 or self.__liste[self.__arrive-1]==3:
-                print("Je sais pas si ya famine mais c'est mangeable")
+            if self.__liste[trou-1]==2 or self.__liste[trou-1]==3:
                 return True
             else:
-                print("t'es bien chez l'adversaire mais tu ne peux pas manger c'est trop gros")
                 return False
         
     #Vérifie que le coup ne provoque pas la famine si il y a famine on active une variable
+    """
+    Fonction complètement à refaire.
+    """
     def Comfam(self):
         #creer un objet de la classe Cjouable
         jouable2=Cjouable(self.__player,self.__liste)
-        if self.__choix-1 != jouable2.bornsup():
-            for i in range((self.__choix-1)+1,jouable2.bornsup()+1):
+
+        if self.__arrive-1 != jouable2.bornsup():
+            #print("t'es pas arrivé sur la borne sup de l'adversaire",jouable2.bornsup())
+            for i in range((self.__arrive-1)+1,jouable2.bornsup()+1):
                 if self.__liste[i]!=0:
+                    #print("Une des cases plus haute que l'endroit que t'as touché n'est pas nulle il n'y aura jamais de famine")
                     return False
                 else:
                     for i in range((self.__choix-1),jouable2.borninf()-1,-1):
-                        if self.mangeable(self.__liste,i)==False:
+                        if self.mangeable(i)==False:
                             return False
                         else:
                             return True
-            
         else:
+            #print("t'es arrivé sur la borne sup de l'adversaire!",jouable2.bornsup())
             for i in range((self.__choix-1),jouable2.borninf()-1,-1):
-                        if self.mangeable(self.__liste,i)==False:
+                        if self.mangeable(i)==False:
                             return False
                         else:
                             return True     
@@ -90,13 +85,11 @@ class Ccoup:
         #creer un objet de la classe Cjouable
         jouable3=Cjouable(self.__player,self.__liste)
         if self.Comfam()==True:
-            print("Non, si on prend c'est la famine") 
             return self.__liste,self.__score1,self.__score2
         else:
             i=self.__choix-1
             #print("Miam", self.mangeable(), jouable3.borninf())
-            while self.mangeable()==True and i >= jouable3.borninf():
-                print("aller je mange!", i)
+            while self.mangeable(self.__arrive)==True and i >= jouable3.borninf():
                 #Cas du joueur1
                 if self.__player==1:
                     self.__score1+=self.__liste[i]
