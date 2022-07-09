@@ -95,7 +95,6 @@ class Ccoup:
         if self.Comfam()==True:
             return self.__liste,self.__score1,self.__score2
         else:
-            print("Le coup ne provoque pas la famine")
             i=self.__arrive
             #tant que les cases suivantes sont mangeables on continue
             while self.mangeable(i)==True and i>self.__tour.borninf():
@@ -103,12 +102,10 @@ class Ccoup:
                 if self.__player==1:
                     self.__score1+=self.__liste[i-1]
                     self.__liste[i-1]=0
-                    print("mangeons la case: ", i)
                     i-=1
                 #Cas du joueur2
                 elif self.__player==2:
                     self.__score2+=self.__liste[i-1]
                     self.__liste[i-1]=0
-                    print("mangeons la case: ", i)
                     i-=1
             return self.__liste,self.__score1,self.__score2
