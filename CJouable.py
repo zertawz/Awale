@@ -12,14 +12,14 @@ class Cjouable:
     def __init__(self,player,liste):
         self.__player=player
         self.__liste=liste
-        
+
     #Donne les cases possible pour le joueur(!=jouable)
     def joueur(self):
         if self.__player==1:
             return [1,2,3,4,5,6]
         else:
             return [7,8,9,10,11,12]
-        
+
     #Donne les cases de l'adversaire
     def adversaire(self):
         if self.__player==1:
