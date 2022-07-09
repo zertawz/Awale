@@ -18,7 +18,7 @@ from CCoup import Ccoup
 
 #Definit la liste de départ
 #liste = [4,4,4,4,4,4,4,4,4,4,4,4]
-liste = [4,4,4,4,4,4,1,2,0,0,1,0]
+liste = [2,1,4,4,4,4,1,2,0,0,1,2]
 #definit les scores de depart
 score1=0
 score2=0
