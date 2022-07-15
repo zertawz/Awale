@@ -17,8 +17,8 @@ from CCoup import Ccoup
 #historique=[]
 
 #Definit la liste de départ
-liste = [4,4,4,4,4,4,4,4,4,4,4,4]
-#liste = [2,1,4,4,0,4,1,2,0,0,1,2]
+#liste = [4,4,4,4,4,4,4,4,4,4,4,4]
+liste = [1,2,3,0,5,6,0,0,0,0,0,0]
 #definit les scores de depart
 score1=0
 score2=0
@@ -38,10 +38,13 @@ while score1<25 and score2<25:
         
         #Creer l'objet pour la saisie protégée
         tour=Cjouable(player,liste)
-        
-        #Mecanisme de saisie protege
+
+        #Initialisation de la saisie protégée
         choix=-1
-        while (choix not in tour.joueur()) or (choix not in tour.casjfam()) or (liste[choix]!=0):
+        jouableEnCasDeFamine=tour.casjfam()
+
+        #Mecanisme de saisie protege
+        while (choix not in tour.joueur()) or (choix not in jouableEnCasDeFamine) or (liste[choix-1]==0):
             choix=int(input("Choix du joueur"+str(player)+ "\n"))
         """
 	Creation d'un objet de la classe coup pour jouer le tour

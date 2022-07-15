@@ -43,9 +43,8 @@ class Cjouable:
     
     #Permet de connaitre le nombre de graine total dans les case
     def sommeadv(self):
-        caseverif = self.adversaire()
-        listeadv = self.__liste[caseverif[0]-1:caseverif[-1]]
-        return sum(listeadv)
+        #Les +1/-1 permettent de régler le déphasage
+        return sum(self.__liste[self.adversaire()[0]-1:self.adversaire()[-1]])
         
     #Detecte la famine
     def detecfam(self):
@@ -57,21 +56,22 @@ class Cjouable:
     #Evalue pour chaque coup si des graines seront seme chez l'adversaire
     #et stocke ces coups (utile en cas de famine)
     def semadv(self):
-        cav = self.joueur(self.__player)
         lstl=[]
         if self.__player==1:
-            for i in range(cav[0],cav[-1]+1):
+            #Parcours les indices des cases du joueur 1
+            for i in range(1,6+1):
                 #le -1 et le 5 permettent de régler le déphasage!
                 if self.__liste[i-1]>=7-i:
                     #c'est le num de la case et non de l'indice de la liste
-                    lstl=lstl+[i]
-                return lstl
+                    lstl.append(i)
+            return lstl
         #meme processus mais avec un déphasage différent
         if self.__player==2:
-            for i in range(cav[0],cav[-1]+1):
+            #Parcours les indices des cases du joueur 2
+            for i in range(6,12+1):
                 if self.__liste[i-1]>=12-i:
-                    lstl=lstl+[i]
-                return lstl
+                    lstl.append(i)
+            return lstl
       
         #donne une liste de cases jouables comprehensible pour le joueur
         #Ces case jouables sont en cas de famine les cases qui nourissent l'adversaire
@@ -80,4 +80,5 @@ class Cjouable:
         if self.detecfam()==False:
             return self.joueur()
         if self.detecfam()==True:
+            print("\033[31mAttention l'adversaire est en famine \nTu dois le nourrir\nTu Peux jouer les cases suivantes:\n"+str(self.semadv())+"\033[37m")
             return self.semadv()
