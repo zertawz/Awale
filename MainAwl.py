@@ -17,8 +17,7 @@ from CCoup import Ccoup
 #historique=[]
 
 #Definit la liste de départ
-#liste = [4,4,4,4,4,4,4,4,4,4,4,4]
-liste = [1,2,3,0,5,6,0,0,0,0,0,0]
+liste = [4,4,4,4,4,4,4,4,4,4,4,4]
 #definit les scores de depart
 score1=0
 score2=0
@@ -41,29 +40,45 @@ while score1<25 and score2<25:
 
         #Initialisation de la saisie protégée
         choix=-1
-        jouableEnCasDeFamine=tour.casjfam()
 
-        #Mecanisme de saisie protege
-        while (choix not in tour.joueur()) or (choix not in jouableEnCasDeFamine) or (liste[choix-1]==0):
-            choix=int(input("Choix du joueur"+str(player)+ "\n"))
-        """
-	Creation d'un objet de la classe coup pour jouer le tour
-	On envoit en attribut l'objet tour qui peut être modifié car
-	la saisie protégé à déjà été réalisée
-        """
-        #Creation d'un objet pour jouer le tour
-        coup=Ccoup(choix,player,liste,score1,score2,tour)
-        
-        #appel de la méthode déplacement pour mettre à jour la liste
-        coup.deplacement()
-        #appels pour mettre à jour les scores et le plateau
-        liste,score1,score2=coup.recuperation()
+        #Fin de partie par famine inévitable
+        if tour.casjfam()!=[]:
 
-        #Activation des classes pour l'affichage
-        aff=Cplateau(liste,score1,score2)
-        aff.affichagep()
-        aff.affichages()
+            #Mecanisme de saisie protege
+            while (choix not in tour.joueur()) or (choix not in tour.casjfam()) or (liste[choix-1]==0) or (not isinstance(choix,int)):
+                choix=input("Choix du joueur"+str(player)+ "\n")
+                #Permet d'éviter que le code saute tout en convertissant si possible
+                try:
+                    choix=int(choix)
+                except:
+            #Creation d'un objet pour jouer le tour
+            coup=Ccoup(choix,player,liste,score1,score2,tour)
         
+            #appel de la méthode déplacement pour mettre à jour la liste
+            coup.deplacement()
+            #appels pour mettre à jour les scores et le plateau
+            liste,score1,score2=coup.recuperation()
+
+            #Activation des classes pour l'affichage
+            aff=Cplateau(liste,score1,score2)
+            aff.affichagep()
+            aff.affichages()
+        else:
+            grainesrestantes=sum(liste)
+            #On donne le reste au joueur
+            if player==1:
+                score1+=grainesrestantes
+            else:
+                score2+=grainesrestantes
+            #On vide le plateau
+            liste=[0,0,0,0,0,0,0,0,0,0,0,0]
+            #On affiche
+            print("\033[32mFin par famine inévitable\nLe Joueur "+str(player)+" ne peut plus nourrir l'adversaire\nLe joueur "+str(player)+" récupère le reste des graînes\033[37m")
+            aff=Cplateau(liste,score1,score2)
+            aff.affichagep()
+            aff.affichages()
+            break
+
 #Conditions de fin de partie
 print("_______Fin de partie_______")
 if score1>score2:
