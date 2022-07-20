@@ -17,7 +17,7 @@ from CCoup import Ccoup
 #historique=[]
 
 #Definit la liste de départ
-liste = [4,4,4,4,4,4,4,4,4,4,4,4]
+liste = [0,0,0,0,0,1,0,0,0,0,1,6]
 #definit les scores de depart
 score1=0
 score2=0
@@ -51,6 +51,7 @@ while score1<25 and score2<25:
                 try:
                     choix=int(choix)
                 except:
+                    pass
             #Creation d'un objet pour jouer le tour
             coup=Ccoup(choix,player,liste,score1,score2,tour)
         
