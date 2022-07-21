@@ -17,7 +17,7 @@ from CCoup import Ccoup
 #historique=[]
 
 #Definit la liste de départ
-liste = [0,0,0,0,0,1,0,0,0,0,1,6]
+liste = [4,4,4,4,4,4,4,4,4,4,4,4]
 #definit les scores de depart
 score1=0
 score2=0

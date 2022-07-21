@@ -68,8 +68,8 @@ class Cjouable:
         #meme processus mais avec un déphasage différent
         if self.__player==2:
             #Parcours les indices des cases du joueur 2
-            for i in range(6,12+1):
-                if self.__liste[i-1]>=12-i:
+            for i in range(7,12+1):
+                if self.__liste[i-1]>=14-i:
                     lstl.append(i)
             return lstl
       
